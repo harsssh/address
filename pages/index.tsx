@@ -1,7 +1,28 @@
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { ChangeEventHandler, FormEventHandler, useState } from 'react'
 
 export default function Home() {
+  const [zipCode, setZipCode] = useState('')
+  const [address, setAddress] = useState('')
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setAddress('')
+    setZipCode(e.target.value)
+  }
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault()
+    const res = await fetch(`/api/search?zipcode=${zipCode}`)
+    if (res.ok) {
+      if (res.status === 204) {
+        setAddress('存在しない郵便番号です')
+      } else {
+        const addr = await res.text()
+        setAddress(addr)
+      }
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -11,7 +32,22 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main>
-        <p>Hello Next.js!</p>
+        <div className='m-5'>
+          <form onSubmit={handleSubmit}>
+            <label>
+              <span className='mr-2'>郵便番号</span>
+              <input
+                type='text'
+                className='border border-gray-500 rounded'
+                onChange={handleChange}
+                value={zipCode}
+              />
+            </label>
+          </form>
+          <div>
+            <p>住所: {address}</p>
+          </div>
+        </div>
       </main>
     </div>
   )
