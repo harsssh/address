@@ -20,6 +20,8 @@ export default function Home() {
         const addr = await res.text()
         setAddress(addr)
       }
+    } else {
+      setAddress('エラーが発生しました')
     }
   }
 
