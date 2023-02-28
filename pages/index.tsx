@@ -5,6 +5,9 @@ export default function Home() {
   const [zipCode, setZipCode] = useState('')
   const [address, setAddress] = useState('')
 
+  const validationErrorMessage = '郵便番号は7桁の数字で入力してください'
+  const isValidZipCode = /\d{7}/.test(zipCode)
+
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setAddress('')
     setZipCode(e.target.value)
@@ -12,6 +15,7 @@ export default function Home() {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    if (!isValidZipCode) return
     const res = await fetch(`/api/search?zipcode=${encodeURI(zipCode)}`)
     if (res.ok) {
       if (res.status === 204) {
@@ -44,6 +48,11 @@ export default function Home() {
                 onChange={handleChange}
                 value={zipCode}
               />
+              {!isValidZipCode && (
+                <p className='text-red-500 font-semibold'>
+                  {validationErrorMessage}
+                </p>
+              )}
             </label>
           </form>
           <div>
