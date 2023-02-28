@@ -12,7 +12,7 @@ export default function Home() {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    const res = await fetch(`/api/search?zipcode=${zipCode}`)
+    const res = await fetch(`/api/search?zipcode=${encodeURI(zipCode)}`)
     if (res.ok) {
       if (res.status === 204) {
         setAddress('存在しない郵便番号です')
