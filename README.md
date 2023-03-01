@@ -1,5 +1,5 @@
 # Search Address
-[Try it out](https://address-psi.vercel.app/)
+Try it out: https://address-psi.vercel.app/
 
 ## Getting Started
 First, run the development server:
